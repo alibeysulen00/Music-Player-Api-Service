@@ -23,4 +23,6 @@ public class Sarkilar {
     @Column(name = "sanatci_id")
     private int sanatci_id;
 
+
+
 }

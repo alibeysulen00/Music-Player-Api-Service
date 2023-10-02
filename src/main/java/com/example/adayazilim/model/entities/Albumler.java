@@ -1,10 +1,8 @@
 package com.example.adayazilim.model.entities;
 
-
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-
 
 
 @Entity
@@ -21,6 +19,7 @@ public class Albumler {
     private int sanatci_id;
     @Column(name = "cikis_tarihi")
     private String cikis_tarihi;
+
 
 
 }

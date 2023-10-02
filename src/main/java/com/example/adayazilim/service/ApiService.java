@@ -1,6 +1,5 @@
 package com.example.adayazilim.service;
 
-
 import com.example.adayazilim.exceptions.CustomException;
 import com.example.adayazilim.model.entities.*;
 import com.example.adayazilim.model.repository.*;
@@ -8,13 +7,9 @@ import com.example.adayazilim.model.responseArtist.ArtistDetails;
 import com.example.adayazilim.model.responseArtist.ResponseArtist;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 
 
 @Service
@@ -51,15 +46,9 @@ public class ApiService {
     // Sarkilar tablosunda oluşturulacak rastgele sarkılar adedini belirlemek için kullanıldı
     public int randomSongCount(int start, int end) {
         Random random = new Random();
-
-        for (int i = start; i <= end; i++) {
-
-        }
-
         int songCount = random.nextInt(end - start + 1) + start;
         return songCount;
     }
-
 
     // Uzunluk değeri parametre olarak gelen rastgele String oluşturan metot
     // Tüm db tablolarında Varchar olan bölümlerin rastgele olarak oluşturulması için kullanıldı
@@ -74,8 +63,6 @@ public class ApiService {
             stringBuilder.append(randomChar);
             name = stringBuilder.toString();
         }
-
-
         return name;
     }
 
@@ -90,12 +77,10 @@ public class ApiService {
 
         String artistName = generateRandomName(5);
         String artitsOrganizationDate = generateRandomDate();
-
-        Sanatcilar sanatcilar1 = new Sanatcilar();
-        sanatcilar1.setAd(artistName);
-        sanatcilar1.setKurulus_tarihi(artitsOrganizationDate);
-        sanatcilarRepo.save(sanatcilar1);
-
+        Sanatcilar artist = new Sanatcilar();
+        artist.setAd(artistName);
+        artist.setKurulus_tarihi(artitsOrganizationDate);
+        sanatcilarRepo.save(artist);
 
         for (int j = 0; j < albumPiece; j++) {
             int songCount = randomSongCount(6, 15);
@@ -103,25 +88,21 @@ public class ApiService {
             String albumDate = generateRandomDate();
             Albumler albumler = new Albumler();
             albumler.setAd(albumName);
-            albumler.setSanatci_id(sanatcilar1.getId());
+            albumler.setSanatci_id(artist.getId());
             albumler.setCikis_tarihi(albumDate);
-
             albumlerRepo.save(albumler);
 
             for (int k = 0; k < songCount; k++) {
                 Sarkilar sarkilar = new Sarkilar();
                 String sarkiAd = generateRandomName(15);
                 sarkilar.setAlbum_id(albumler.getId());
-                sarkilar.setSanatci_id(sanatcilar1.getId());
+                sarkilar.setSanatci_id(artist.getId());
                 sarkilar.setAd(sarkiAd);
-
                 sarkilarRepo.save(sarkilar);
 
             }
-
-
         }
-        return sanatcilar1.getId();
+        return artist.getId();
     }
 
 
@@ -134,9 +115,7 @@ public class ApiService {
             throw new CustomException("Şarkı adedi sıfır veya ad alanı boş! ");
         } else if (sarkiAdet > sarkilarRepo.count()) {
             throw new CustomException("Listeye eklenmesi istenen şarkı adedi DB deki toplam şarkıdan büyük!");
-
         } else {
-
             CalmaListeleri calmaListeleri = new CalmaListeleri();
             calmaListeleri.setAd(ad);
             calmaListeleriRepo.save(calmaListeleri);
@@ -150,11 +129,7 @@ public class ApiService {
                 calmaListeleriSarkilariRepo.save(calmaListeleriSarkilari);
 
             }
-
-
         }
-
-
         return playListId;
     }
 
@@ -169,9 +144,7 @@ public class ApiService {
                 addSongById.add(calmaListeleriSarkilari.getSarki_id());
             }
         }
-
         calmaListeleriSarkilariRepo.deleteByCalmaListesiId(calmaListesiId); // calmaListeleriSarkilariRepo da calmaLİstesiId sine göre satır silen Query metodu mevcuttur.
-
         for (int i = 0; i < yeniSarkiAdet; i++) {  // Eklemek istediğimiz şarkı adedi kadar döner
             int randomSongDb = randomDatabaseSong();
             for (int j = 0; j < addSongById.size(); j++) {  // önceki çalma listesindeki şarkıların sayısı kadar döner ( şarkıların eşitliğinin kontrolü için )
@@ -185,44 +158,26 @@ public class ApiService {
 
                 }
             }
-
         }
-
-
     }
-
 
     //---------------------------------------------SERVIS 4 ( java kodu ve sql kodu olmak üzere 2 farklı şekilde yapılmıştır !)------------------------------------------------------//
     public ResponseArtist sanatciBazliIstatistikAl() {
         ResponseArtist response = new ResponseArtist();
         List<ArtistDetails> artistDetailsList = new ArrayList<>();
-        int totalAlbum = 0, totalSong = 0;
-        for (Sanatcilar sanatcilar : sanatcilarRepo.findAll()) {
+
+        for(Sanatcilar sanatcilar: sanatcilarRepo.findAll()){
             ArtistDetails artistDetails = new ArtistDetails();
             artistDetails.setArtistName(sanatcilar.getAd());
-
-            for (Albumler albumler : albumlerRepo.findAll()) {
-                if (albumler.getSanatci_id() == sanatcilar.getId()) {
-                    totalAlbum++;
-                }
-
-            }
-            for (Sarkilar sarkilar : sarkilarRepo.findAll()) {
-                if (sarkilar.getSanatci_id() == sanatcilar.getId()) {
-                    totalSong++;
-                }
-
-            }
-            artistDetails.setArtisAlbumTotal(totalAlbum);
-            artistDetails.setCountOfSongsInAlbums(totalSong);
-            totalAlbum = 0;
-            totalSong = 0;
-
-
+            artistDetails.setArtisAlbumTotal(albumlerRepo.getAlbumCount(sanatcilar.getId())); // albumlerRepodan gelen query istek sonucunda albumler toplamı set ediliyor
+            artistDetails.setCountOfSongsInAlbums(sarkilarRepo.getSongCount(sanatcilar.getId())); // sarkilarRepodan gelen query istek sonucunda her albumun sarkı sayısı set ediliyor
             artistDetailsList.add(artistDetails);
         }
-        response.setArtistDetailsList(artistDetailsList);
 
+        // Şarkı sayısına göre büyükten küçüğe sıralama
+        artistDetailsList.sort(Comparator.comparingLong(ArtistDetails::getCountOfSongsInAlbums).reversed());
+
+        response.setArtistDetailsList(artistDetailsList);
         return response;
     }
 

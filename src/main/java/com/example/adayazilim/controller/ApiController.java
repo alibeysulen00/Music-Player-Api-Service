@@ -1,8 +1,6 @@
 package com.example.adayazilim.controller;
 
-
-
-
+import com.example.adayazilim.model.responseArtist.ArtistDetails;
 import com.example.adayazilim.model.responseArtist.ResponseArtist;
 import com.example.adayazilim.service.ApiService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,9 +36,4 @@ public class ApiController {
     public ResponseArtist artistStatisticsMethod(){
         return apiService.sanatciBazliIstatistikAl();
     }
-
-
-
-
-
 }
