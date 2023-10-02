@@ -29,8 +29,12 @@
     <li>The name of each song must be a random string 15 characters long </li>
     <li> Returns the ID value of the added artist </li>
 </ul>
+<p><strong>Sarkilar Table and Albumler Table and Sanatcilar Table</strong></p>
 
 ![Servis1](servis1_db_sanatciTablo.png)
+
+<p><strong>Postman</strong></p>
+
 ![Servis1Db](servis1_postman.png)
 
 
@@ -50,6 +54,15 @@
     
 </ul>
 
+<p><strong>CalmaListesi Table and CalmaListesiSarkilari Table</strong></p>
+
+![Servis2Db](servis2_db_calmaListesiTablosu.png)
+
+<p><strong>Postman</strong></p>
+
+![Servis2Postman](servis2_postman.png)
+
+
 
 <h4>Service 3</h4>
 <hr>
@@ -65,6 +78,10 @@
 
 
 
+<p><strong>Postman</strong></p>
+
+![Servis3Postman](servis3_postman.png)
+
 <h4>Service 4</h4>
 <hr>
 <p><strong>sanatciBazliIstatistikAl ( )</strong> 
@@ -73,7 +90,20 @@
     <li>Creates a table with columns for artist name, total number of albums, total number of songs on their albums  </li>
     <li> The table is ordered from the most to the least number of songs</li>
     <li> Returns the table </li>
-    
-    
+    <p><strong>CalmaListesi Table and CalmaListesiSarkilari Table</strong></p>
 </ul>
+
+<p><strong>SQL </strong></p>
+
+![Servis4Db](servis4_db.png)
+
+<p><strong>Postman</strong></p>
+
+![Servis4Postman](servis4_postman.png)
+    
+<p><strong>DATABASE ER DIAGRAM</strong></p>
+
+![ERDIAGRAM](adayazilim.drawio.png)
+
+
 
