@@ -30,6 +30,9 @@
     <li> Returns the ID value of the added artist </li>
 </ul>
 
+![Servis1](servis1_db_sanatciTablo.png)
+![Servis1Db](servis1_postman.png)
+
 
 
 
