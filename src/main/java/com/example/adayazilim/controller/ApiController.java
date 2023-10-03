@@ -1,13 +1,9 @@
 package com.example.adayazilim.controller;
 
-import com.example.adayazilim.model.responseArtist.ArtistDetails;
 import com.example.adayazilim.model.responseArtist.ResponseArtist;
 import com.example.adayazilim.service.ApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-
 
 @RestController
 @RequestMapping("/api")
@@ -15,7 +11,6 @@ public class ApiController {
 
     @Autowired
     ApiService apiService;
-
 
 
     @PostMapping("/addArtist")
@@ -36,4 +31,6 @@ public class ApiController {
     public ResponseArtist artistStatisticsMethod(){
         return apiService.sanatciBazliIstatistikAl();
     }
+
+
 }

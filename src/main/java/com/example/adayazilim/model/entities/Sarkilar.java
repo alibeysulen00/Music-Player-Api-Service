@@ -21,7 +21,7 @@ public class Sarkilar {
     private int album_id;
 
     @Column(name = "sanatci_id")
-    private int sanatci_id;
+    private int sanatciId;
 
 
 

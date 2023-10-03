@@ -11,7 +11,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-
 @Service
 public class ApiService {
 
@@ -88,7 +87,7 @@ public class ApiService {
             String albumDate = generateRandomDate();
             Albumler albumler = new Albumler();
             albumler.setAd(albumName);
-            albumler.setSanatci_id(artist.getId());
+            albumler.setSanatciId(artist.getId());
             albumler.setCikis_tarihi(albumDate);
             albumlerRepo.save(albumler);
 
@@ -96,7 +95,7 @@ public class ApiService {
                 Sarkilar sarkilar = new Sarkilar();
                 String sarkiAd = generateRandomName(15);
                 sarkilar.setAlbum_id(albumler.getId());
-                sarkilar.setSanatci_id(artist.getId());
+                sarkilar.setSanatciId(artist.getId());
                 sarkilar.setAd(sarkiAd);
                 sarkilarRepo.save(sarkilar);
 
@@ -169,8 +168,8 @@ public class ApiService {
         for(Sanatcilar sanatcilar: sanatcilarRepo.findAll()){
             ArtistDetails artistDetails = new ArtistDetails();
             artistDetails.setArtistName(sanatcilar.getAd());
-            artistDetails.setArtisAlbumTotal(albumlerRepo.getAlbumCount(sanatcilar.getId())); // albumlerRepodan gelen query istek sonucunda albumler toplamı set ediliyor
-            artistDetails.setCountOfSongsInAlbums(sarkilarRepo.getSongCount(sanatcilar.getId())); // sarkilarRepodan gelen query istek sonucunda her albumun sarkı sayısı set ediliyor
+            artistDetails.setArtisAlbumTotal(albumlerRepo.countAllBySanatciId(sanatcilar.getId())); // albumlerRepoda sanatcilarId sine göre count dönen metot Jpa yardımı ile yazıldı
+            artistDetails.setCountOfSongsInAlbums(sarkilarRepo.countAllBySanatciId(sanatcilar.getId())); // sarkilarRepoda sanatcilarId sine göre count dönen metot Jpa yardımı ile yazıldı
             artistDetailsList.add(artistDetails);
         }
 
@@ -180,6 +179,11 @@ public class ApiService {
         response.setArtistDetailsList(artistDetailsList);
         return response;
     }
+
+
+
+
+
 
 
 

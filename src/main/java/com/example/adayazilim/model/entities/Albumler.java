@@ -16,7 +16,7 @@ public class Albumler {
     @Column(name = "ad")
     private String ad;
     @Column(name = "sanatci_id")
-    private int sanatci_id;
+    private int sanatciId;
     @Column(name = "cikis_tarihi")
     private String cikis_tarihi;
 
